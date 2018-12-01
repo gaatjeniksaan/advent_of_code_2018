@@ -1,27 +1,55 @@
+import time
+from itertools import cycle
+
 with open("./data.txt") as f:
-	input = f.readlines()
-	data = []
-	for i in input:
-		data.append(int(i.strip("\n")))
+	data = [int(x) for x in f.readlines()]
 
-freq = 0
-for j in data:
-	freq += j
+print("Final frequency: ", sum(data))
 
-print("Final frequency: ", freq)
+# Part 2, let's try out some different scenarios
+# Start with a set
+frequencies = set()
+f = 0
 
-# Part 2
-freqFound = False
-freqMap = {}
-freqPt2 = 0
+setstart = time.time() 
+for i in cycle(data):
+	if f in frequencies:
+		print("SET. First frequency to encounter twice: ", f)
+		break
 
-while freqFound == False:
-	for k in data:
-		if freqPt2 in freqMap.keys():
-			print("First frequency to encounter twice: ", freqPt2)
-			freqFound = True
-			break
-		else:
-			freqMap[freqPt2] = "present"
+	frequencies.add(f)
+	f += i
+setend = time.time()
 
-		freqPt2 += k
+# Next up: list
+frequencies = []
+f = 0
+
+liststart = time.time()
+for i in cycle(data):
+	if f in frequencies:
+		print("LIST. First frequency to encounter twice: ", f)
+		break
+
+	frequencies.append(f)
+	f += i
+listend = time.time()
+
+# Final: dict
+frequencies = {}
+f = 0
+
+dictstart = time.time()
+for i in cycle(data):
+	if f in frequencies.keys():
+		print("DICT. First frequency to encounter twice: ", f)
+		break
+
+	frequencies[f] = 1
+	f += i
+dictend = time.time()
+
+print("Set time in sec: {:0.2f}".format(setend - setstart))
+print("List time in sec: {:0.2f}".format(listend - liststart))
+print("Dict time in sec: {:0.2f}".format(dictend - dictstart))
+
