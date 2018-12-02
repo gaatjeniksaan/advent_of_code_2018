@@ -13,6 +13,7 @@ func main() {
 	}
 	data := strings.Split(string(input), "\n")
 
+	// Part 1
 	var twos bool
 	var threes bool
 	twosTotal := 0
@@ -29,6 +30,7 @@ func main() {
 	}
 
 	fmt.Println("Answer part 1: ", twosTotal*threesTotal)
+	fmt.Println("Answer part 2: ", getAlmostIdentical(data))
 }
 
 func getDuplicates(seq string) (bool, bool) {
@@ -56,4 +58,30 @@ func getDuplicates(seq string) (bool, bool) {
 
 	}
 	return twos, threes
+}
+
+func getAlmostIdentical(data []string) string {
+	var diff int
+	var result string
+	for _, s1 := range data {
+		for _, s2 := range data {
+			if len(s1) != 26 || len(s2) != 26 {
+				continue
+			}
+
+			diff = 0
+			result = ""
+			for index := range s1 {
+				if s1[index] != s2[index] {
+					diff++
+				} else {
+					result += string(s1[index])
+				}
+			}
+			if diff == 1 {
+				return result
+			}
+		}
+	}
+	return "None Found"
 }
