@@ -9,29 +9,37 @@ with open("./data.txt") as f:
 		"length":	int(x.split()[3].split("x")[1].strip("\n")),}
 		for x in f.readlines()]
 
-coords = defaultdict(int)
+coords = defaultdict(list)
 
-for i in range(2):
-	# First loop to check populate coordinates and check how many are doubled
-	# Second loop to check per ID if they access a coordinate that is a double
-	for item in data:
-		overlap = False
-		# Get upper right coordinate first
-		ul_row = item["top"]
-		ul_col = item["left"]
 
-		for row in range(item["length"]):
-			for col in range(item["width"]):
-				r = ul_row + row
-				c = ul_col + col
-				if i == 1 and coords[(r, c)] > 1:
-					overlap = True
-					continue
-				coords[(r, c)] += 1
+for item in data:
+	# Get upper right coordinate first
+	ul_row = item["top"]
+	ul_col = item["left"]
 
-		if i == 1 and overlap == False:
-			print("Answer part 2: ", item["id"].strip("#"))
+	for row in range(item["length"]):
+		for col in range(item["width"]):
+			r = ul_row + row
+			c = ul_col + col
+			coords[(r, c)].append(item["id"])
 
-	if i == 0:
-		print("Answer part 1: ", sum(1 for i in coords.values() if i > 1))
-		print("Length of coords: ", len(coords))
+
+print("Answer part 1: ", sum(1 for i in coords.values() if len(i) > 1))
+
+ids = set([x["id"] for x in data])
+double_ids = set([x for y in coords if len(y) > 1 for x in y])
+
+print(len(ids))
+print(len(double_ids))
+
+print("Answer part 2: ", ids.intersection(double_ids))
+# 
+# for x in coords:
+
+
+# print(coords)
+
+# print("Answer part 2: ", )
+
+
+# print(coords)
