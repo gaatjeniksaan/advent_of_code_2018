@@ -3,8 +3,6 @@ from collections import Counter, defaultdict
 with open('./data.txt') as f:
     data = f.read().strip('\n')
     data = [(int(x.split(', ')[0]), int(x.split(', ')[1])) for x in data.split('\n')]
-# test data
-# data = [(1, 1), (1, 6), (8, 3), (3, 4), (5, 5), (8, 9)]
 
 def get_mhd(x1, y1, x2, y2):
     return abs(x1 - x2) + abs(y1 - y2)
@@ -16,36 +14,36 @@ def get_largest_coords(data):
     return x_max, y_max
 
 
-# def get_closest_point(data, x, y):
-#     results = defaultdict(list)
-#     for index, val in enumerate(data):
-#         mhd = get_mhd(x, y, val[0], val[1])
-#         results[mhd].append(index)
+def get_closest_point(data, x, y):
+    results = defaultdict(list)
+    for index, val in enumerate(data):
+        mhd = get_mhd(x, y, val[0], val[1])
+        results[mhd].append(index)
 
-#     closest = results[sorted(results.keys())[0]]
-#     if len(closest) > 1:
-#         return None
-#     else:
-#         return closest[0]
+    closest = results[sorted(results.keys())[0]]
+    if len(closest) > 1:
+        return None
+    else:
+        return closest[0]
 
 
 x_max, y_max = get_largest_coords(data)
-# results = defaultdict(int)
-# infinites = []
-# for x in range(x_max + 1):
-#     for y in range(y_max + 1):
-#         closest = get_closest_point(data, x, y)
-#         results[closest] += 1
-#         if x == 0 or y == 0 :
-#             infinites.append(closest)
-#         if x == x_max or y == y_max:
-#             infinites.append(closest)
+results = defaultdict(int)
+infinites = []
+for x in range(x_max + 1):
+    for y in range(y_max + 1):
+        closest = get_closest_point(data, x, y)
+        results[closest] += 1
+        if x == 0 or y == 0 :
+            infinites.append(closest)
+        if x == x_max or y == y_max:
+            infinites.append(closest)
 
-# infinites = set(infinites)
-# for i in infinites:
-#     results.pop(i)
+infinites = set(infinites)
+for i in infinites:
+    results.pop(i)
 
-# print('Answer pt1: {}'.format(sorted(results.values())[-1]))
+print('Answer pt1: {}'.format(sorted(results.values())[-1]))
 
 # What is the size of the region containing all locations which have a 
 # total distance to all given coordinates of less than 10000?
